@@ -1,4 +1,4 @@
-* {
+* { 
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -164,4 +164,64 @@ footer p {
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
     display: none;
-} 
+}
+
+
+@media (max-width: 768px) {
+
+    
+    header {
+        padding: 10px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+   
+    .logo {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    
+    main {
+        padding: 40px 15px;
+        margin: 20px auto;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2, h3 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+    
+    /* Ajustes no footer */
+    footer {
+        padding: 20px 0;
+    }
+
+    footer p {
+        font-size: 12px;
+    }
+
+    .message {
+        padding: 15px;
+    }
+}
