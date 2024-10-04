@@ -194,6 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    carregarPerfilDoLocalStorage();
     const editProfileButton = document.getElementById('editProfileButton');
     const editProfileModal = document.getElementById('editProfileModal');
     const closeButton = document.querySelector('.close-button');
@@ -224,15 +225,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (editProfileForm) {
         editProfileForm.addEventListener('submit', (event) => {
             event.preventDefault();
+
             const newUsername = document.getElementById('editUsername').value;
             const newEmail = document.getElementById('editEmail').value;
             const newBio = document.getElementById('editBio').value;
             const newProfilePicture = document.getElementById('editProfilePicture').files[0];
 
+            localStorage.setItem('username', newUsername);
+            localStorage.setItem('email', newEmail);
+            localStorage.setItem('bio', newBio);
+
             if (newProfilePicture) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    profilePicture.src = e.target.result;
+                reader.onload = function (e) {
+                    const newProfilePictureUrl = e.target.result;
+                    localStorage.setItem('profilePicture', newProfilePictureUrl);
+                    profilePicture.src = newProfilePictureUrl;
                 };
                 reader.readAsDataURL(newProfilePicture);
             }
@@ -242,7 +250,26 @@ document.addEventListener('DOMContentLoaded', () => {
             bioDisplay.textContent = newBio;
 
             editProfileModal.style.display = 'none';
-            alert('Perfil atualizado com sucesso!');
         });
     }
 });
+
+function carregarPerfilDoLocalStorage() {
+    const storedUsername = localStorage.getItem('username');
+    const storedEmail = localStorage.getItem('email');
+    const storedBio = localStorage.getItem('bio');
+    const storedProfilePicture = localStorage.getItem('profilePicture');
+
+    if (storedUsername) {
+        document.getElementById('usernameDisplay').textContent = storedUsername;
+    }
+    if (storedEmail) {
+        document.getElementById('emailDisplay').textContent = storedEmail;
+    }
+    if (storedBio) {
+        document.getElementById('bioDisplay').textContent = storedBio;
+    }
+    if (storedProfilePicture) {
+        document.getElementById('profilePicture').src = storedProfilePicture;
+    }
+}
