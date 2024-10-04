@@ -1,4 +1,4 @@
-let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [ 
+let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
     { username: 'usuario1', password: 'senha1' },
     { username: 'usuario2', password: 'senha2' }
 ];
@@ -70,7 +70,7 @@ function addToCart(name, price) {
     if (existingProduct) {
         existingProduct.quantity++;
     } else {
-        cart.push({ name: name, price: price, quantity: 1 });
+        cart.push({ name, price, quantity: 1 });
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));  
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total').appendChild(checkoutButton);
     }
 
-    if (window.location.pathname.includes('index2.html') || window.location.pathname.includes('index3.html') || window.location.pathname.includes('index4.html') || window.location.pathname.includes('index6.html')) {
+    if (['index2.html', 'index3.html', 'index4.html', 'index6.html'].some(page => window.location.pathname.includes(page))) {
         verificarLogin();
         const logoutButton = document.getElementById('logoutButton');
         if (logoutButton) {
@@ -191,6 +191,58 @@ document.addEventListener('DOMContentLoaded', () => {
                 const preco = parseFloat(precoText.replace('Preço: R$', '').replace(',', '.'));
                 addToCart(nome, preco);
             });
+        });
+    }
+
+    const editProfileButton = document.getElementById('editProfileButton');
+    const editProfileModal = document.getElementById('editProfileModal');
+    const closeButton = document.querySelector('.close-button');
+    const editProfileForm = document.getElementById('editProfileForm');
+    const profilePicture = document.getElementById('profilePicture');
+    const usernameDisplay = document.getElementById('usernameDisplay');
+    const emailDisplay = document.getElementById('emailDisplay');
+    const bioDisplay = document.getElementById('bioDisplay');
+
+    if (editProfileButton) {
+        editProfileButton.addEventListener('click', () => {
+            editProfileModal.style.display = 'block';
+        });
+    }
+
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            editProfileModal.style.display = 'none';
+        });
+    }
+
+    window.addEventListener('click', (event) => {
+        if (event.target === editProfileModal) {
+            editProfileModal.style.display = 'none';
+        }
+    });
+
+    if (editProfileForm) {
+        editProfileForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const newUsername = document.getElementById('editUsername').value;
+            const newEmail = document.getElementById('editEmail').value;
+            const newBio = document.getElementById('editBio').value;
+            const newProfilePicture = document.getElementById('editProfilePicture').files[0];
+
+            if (newProfilePicture) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    profilePicture.src = e.target.result;
+                };
+                reader.readAsDataURL(newProfilePicture);
+            }
+
+            usernameDisplay.textContent = newUsername;
+            emailDisplay.textContent = newEmail;
+            bioDisplay.textContent = newBio;
+
+            editProfileModal.style.display = 'none';
+            alert('Perfil atualizado com sucesso!');
         });
     }
 });
