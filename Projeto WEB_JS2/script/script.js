@@ -193,29 +193,22 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
+document.addEventListener('DOMContentLoaded', () => {
     carregarPerfilDoLocalStorage();
 
     const editProfileButton = document.getElementById('editProfileButton');
     const editProfileModal = document.getElementById('editProfileModal');
-    const closeButton = document.querySelector('.close-button');
+    const closeButton = editProfileModal.querySelector('.close-button');
     const editProfileForm = document.getElementById('editProfileForm');
-    const profilePicture = document.getElementById('profilePicture');
-    const usernameDisplay = document.getElementById('usernameDisplay');
-    const emailDisplay = document.getElementById('emailDisplay');
-    const bioDisplay = document.getElementById('bioDisplay');
 
-    if (editProfileButton) {
-        editProfileButton.addEventListener('click', () => {
-            editProfileModal.style.display = 'block';
-        });
-    }
+    editProfileButton.addEventListener('click', () => {
+        editProfileModal.style.display = 'block';
+        preencherFormularioDeEdicao();
+    });
 
-    if (closeButton) {
-        closeButton.addEventListener('click', () => {
-            editProfileModal.style.display = 'none';
-        });
-    }
+    closeButton.addEventListener('click', () => {
+        editProfileModal.style.display = 'none';
+    });
 
     window.addEventListener('click', (event) => {
         if (event.target === editProfileModal) {
@@ -223,35 +216,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    if (editProfileForm) {
-        editProfileForm.addEventListener('submit', (event) => {
-            event.preventDefault();
+    editProfileForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const username = document.getElementById('editUsername').value;
+        const email = document.getElementById('editEmail').value;
+        const bio = document.getElementById('editBio').value;
+        const profilePicture = document.getElementById('editProfilePicture').files[0];
 
-            const newUsername = document.getElementById('editUsername').value;
-            const newEmail = document.getElementById('editEmail').value;
-            const newBio = document.getElementById('editBio').value;
-            const newProfilePicture = document.getElementById('editProfilePicture').files[0];
+        let profilePictureUrl = 'default-profile.png';
 
-            let newProfilePictureUrl = profilePicture.src;
-            if (newProfilePicture) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    newProfilePictureUrl = e.target.result;
-                    profilePicture.src = newProfilePictureUrl;
-                    salvarPerfilNoLocalStorage(newUsername, newEmail, newBio, newProfilePictureUrl);
-                };
-                reader.readAsDataURL(newProfilePicture);
-            } else {
-                salvarPerfilNoLocalStorage(newUsername, newEmail, newBio, newProfilePictureUrl);
-            }
-
-            usernameDisplay.textContent = newUsername;
-            emailDisplay.textContent = newEmail;
-            bioDisplay.textContent = newBio;
-
+        if (profilePicture) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                profilePictureUrl = e.target.result; 
+                salvarPerfilNoLocalStorage(username, email, bio, profilePictureUrl);
+                carregarPerfilDoLocalStorage();
+                editProfileModal.style.display = 'none';
+            };
+            reader.readAsDataURL(profilePicture);
+        } else {
+            salvarPerfilNoLocalStorage(username, email, bio, profilePictureUrl);
+            carregarPerfilDoLocalStorage();
             editProfileModal.style.display = 'none';
-        });
-    }
+        }
+    });
 });
 
 function carregarPerfilDoLocalStorage() {
@@ -260,11 +248,20 @@ function carregarPerfilDoLocalStorage() {
         document.getElementById('usernameDisplay').textContent = perfil.username || 'Nome não definido';
         document.getElementById('emailDisplay').textContent = perfil.email || 'Email não definido';
         document.getElementById('bioDisplay').textContent = perfil.bio || 'Bio não definida';
-        document.getElementById('profilePicture').src = perfil.profilePicture || 'default-picture.jpg';
+        document.getElementById('profilePicture').src = perfil.profilePicture || 'image/default-profile.png';
     }
 }
 
 function salvarPerfilNoLocalStorage(username, email, bio, profilePicture) {
     const perfil = { username, email, bio, profilePicture };
     localStorage.setItem('perfil', JSON.stringify(perfil));
+}
+
+function preencherFormularioDeEdicao() {
+    const perfil = JSON.parse(localStorage.getItem('perfil'));
+    if (perfil) {
+        document.getElementById('editUsername').value = perfil.username || '';
+        document.getElementById('editEmail').value = perfil.email || '';
+        document.getElementById('editBio').value = perfil.bio || '';
+    }
 }
