@@ -138,22 +138,7 @@ function calcularPromocao(preco, nomeProduto) {
 }
 
 function finalizarCompra() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    if (cart.length === 0) {
-        alert('Seu carrinho está vazio.');
-        return;
-    }
-
-    const paymentMethod = document.querySelector('input[name="payment"]:checked');
-    if (!paymentMethod) {
-        alert('Por favor, selecione um método de pagamento.');
-        return;
-    }
-
-    alert(`Compra finalizada com sucesso! Método de pagamento: ${paymentMethod.value}`);
-    
-    localStorage.removeItem('cart');
-    window.location.href = 'index2.html';
+    window.location.href = 'index5.html'; // Redireciona para a página de finalização de compra
 }
 
 function saveUserProfile(username, profileData) {
@@ -184,6 +169,79 @@ function saveProfileData(username, email, bio, profilePicture) {
     saveUserProfile(username, profileData);
 }
 
+function updateOrderSummary() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartSummaryElement = document.getElementById('cart-summary');
+    const totalSummaryElement = document.getElementById('total-summary');
+    cartSummaryElement.innerHTML = "";
+
+    if (cart.length === 0) {
+        cartSummaryElement.innerHTML = "<p>O carrinho está vazio.</p>";
+        totalSummaryElement.innerHTML = "";
+        return;
+    }
+
+    let total = 0;
+    cart.forEach(item => {
+        const itemElement = document.createElement("div");
+        itemElement.className = "cart-item";
+        itemElement.innerHTML = `
+            <span>${item.name} (x${item.quantity})</span>
+            <span>R$ ${(item.price * item.quantity).toFixed(2)}</span>
+        `;
+        cartSummaryElement.appendChild(itemElement);
+        total += item.price * item.quantity;
+    });
+
+    totalSummaryElement.innerHTML = `Total: R$ ${total.toFixed(2)}`;
+}
+
+function saveAddress(event) {
+    event.preventDefault();
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const state = document.getElementById('state').value;
+    const zip = document.getElementById('zip').value;
+
+    const shippingAddress = { address, city, state, zip };
+    localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
+
+    alert('Endereço salvo com sucesso!');
+}
+
+function loadPaymentMethod() {
+    const paymentMethod = document.querySelector('input[name="payment"]:checked');
+    if (paymentMethod) {
+        const selectedPaymentElement = document.getElementById('selected-payment-method');
+        selectedPaymentElement.innerHTML = `Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt}`;
+    }
+}
+
+function confirmPurchase() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if (cart.length === 0) {
+        alert('Seu carrinho está vazio.');
+        return;
+    }
+
+    const shippingAddress = JSON.parse(localStorage.getItem('shippingAddress'));
+    if (!shippingAddress) {
+        alert('Por favor, forneça um endereço de entrega.');
+        return;
+    }
+
+    const paymentMethod = document.querySelector('input[name="payment"]:checked');
+    if (!paymentMethod) {
+        alert('Por favor, selecione um método de pagamento.');
+        return;
+    }
+
+    alert(`Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value}`);
+    
+    localStorage.removeItem('cart');
+    window.location.href = 'index2.html';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
@@ -204,6 +262,21 @@ document.addEventListener('DOMContentLoaded', () => {
         checkoutButton.className = 'checkout-button';
         checkoutButton.onclick = finalizarCompra;
         document.getElementById('total').appendChild(checkoutButton);
+    }
+
+    if (window.location.pathname.includes('index5.html')) {
+        updateOrderSummary();
+        loadPaymentMethod();
+
+        const addressForm = document.getElementById('addressForm');
+        if (addressForm) {
+            addressForm.addEventListener('submit', saveAddress);
+        }
+
+        const confirmPurchaseButton = document.getElementById('confirmPurchaseButton');
+        if (confirmPurchaseButton) {
+            confirmPurchaseButton.addEventListener('click', confirmPurchase);
+        }
     }
 
     if (window.location.pathname.includes('index2.html') || window.location.pathname.includes('index3.html') || window.location.pathname.includes('index4.html') || window.location.pathname.includes('index6.html') || window.location.pathname.includes('index7.html')) {
