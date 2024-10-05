@@ -43,6 +43,7 @@ function login(event) {
 
     if (usuario) {
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('currentUser', username);
         window.location.href = 'index2.html';
     } else {
         const loginMessage = document.getElementById('loginMessage');
@@ -60,97 +61,37 @@ function verificarLogin() {
 
 function logout() {
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('currentUser');
     window.location.href = 'index.html';
 }
 
-function addToCart(name, price) {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const existingProduct = cart.find(item => item.name === name);
+function carregarPerfilDoLocalStorage() {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) return;
 
-    if (existingProduct) {
-        existingProduct.quantity++;
-    } else {
-        cart.push({ name, price, quantity: 1 });
+    const storedProfile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
+    const { username, email, bio, profilePicture } = storedProfile;
+
+    if (username) {
+        document.getElementById('usernameDisplay').textContent = username;
     }
-
-    localStorage.setItem('cart', JSON.stringify(cart));  
-    alert(`${name} foi adicionado ao carrinho.`);
-}
-
-function updateCart() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartElement = document.getElementById('cart');
-    const cartTotalElement = document.getElementById('total');
-    cartElement.innerHTML = "";
-
-    if (cart.length === 0) {
-        cartElement.innerHTML = "<p>O carrinho está vazio.</p>";
-        cartTotalElement.innerHTML = "";
-        return;
+    if (email) {
+        document.getElementById('emailDisplay').textContent = email;
     }
-
-    let total = 0;
-    cart.forEach(item => {
-        let itemPrice = item.price;
-        
-        if (item.quantity >= 3) {
-            itemPrice = item.price * 0.5;  
-        }
-
-        const itemElement = document.createElement("div");
-        itemElement.className = "cart-item";
-        itemElement.innerHTML = `
-            <span>${item.name} (x${item.quantity})</span>
-            <span>R$ ${(item.price * item.quantity).toFixed(2)}</span>
-            <button onclick="removeFromCart('${item.name}')">Remover</button>
-        `;
-        cartElement.appendChild(itemElement);
-        total += itemPrice * item.quantity;
-    });
-
-    cartTotalElement.innerHTML = `Total: R$ ${total.toFixed(2)}`;
-}
-
-function removeFromCart(name) {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart = cart.filter(item => item.name !== name);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCart();
-}
-
-function calcularPromocao(preco, nomeProduto) {
-    const precoPromocional = preco * 0.5; 
-    const mensagem = `Leve 3 unidades de ${nomeProduto} por R$ ${precoPromocional.toFixed(2)} cada!`;
-
-    const idProdutoFormatado = `promocao-${nomeProduto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/--+/g, '-').replace(/[^\w-]/g, '')}`;
-    
-    console.log(`ID gerado: ${idProdutoFormatado}`);  
-
-    const promoElement = document.getElementById(idProdutoFormatado);
-    if (promoElement) {
-        promoElement.textContent = mensagem;
-    } else {
-        console.error(`Elemento ${idProdutoFormatado} não encontrado.`);
+    if (bio) {
+        document.getElementById('bioDisplay').textContent = bio;
+    }
+    if (profilePicture) {
+        document.getElementById('profilePicture').src = profilePicture;
     }
 }
 
-function finalizarCompra() {
-    const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    if (cart.length === 0) {
-        alert('Seu carrinho está vazio.');
-        return;
-    }
+function salvarPerfilNoLocalStorage(username, email, bio, profilePicture) {
+    const currentUser = localStorage.getItem('currentUser');
+    if (!currentUser) return;
 
-    const paymentMethod = document.querySelector('input[name="payment"]:checked');
-    if (!paymentMethod) {
-        alert('Por favor, selecione um método de pagamento.');
-        return;
-    }
-
-    alert(`Compra finalizada com sucesso! Método de pagamento: ${paymentMethod.value}`);
-    
-    localStorage.removeItem('cart');
-    window.location.href = 'index2.html';
+    const profileData = { username, email, bio, profilePicture };
+    localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profileData));
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -164,34 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.addEventListener('submit', register);
     }
 
-    if (window.location.pathname.includes('index3.html')) {
-        verificarLogin();
-        updateCart();
-
-        const checkoutButton = document.createElement('button');
-        checkoutButton.textContent = 'Finalizar Compra';
-        checkoutButton.className = 'checkout-button';
-        checkoutButton.onclick = finalizarCompra;
-        document.getElementById('total').appendChild(checkoutButton);
-    }
-
     if (['index2.html', 'index3.html', 'index4.html', 'index6.html'].some(page => window.location.pathname.includes(page))) {
         verificarLogin();
         const logoutButton = document.getElementById('logoutButton');
         if (logoutButton) {
             logoutButton.onclick = logout;
         }
-
-        const addToCartButtons = document.querySelectorAll('.addToCartButton');
-        addToCartButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const produtoElement = button.parentElement;
-                const nome = produtoElement.querySelector('h4').textContent;
-                const precoText = produtoElement.querySelector('p').textContent;
-                const preco = parseFloat(precoText.replace('Preço: R$', '').replace(',', '.'));
-                addToCart(nome, preco);
-            });
-        });
     }
 
     carregarPerfilDoLocalStorage();
@@ -231,18 +150,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const newBio = document.getElementById('editBio').value;
             const newProfilePicture = document.getElementById('editProfilePicture').files[0];
 
-            localStorage.setItem('username', newUsername);
-            localStorage.setItem('email', newEmail);
-            localStorage.setItem('bio', newBio);
-
+            let newProfilePictureUrl = profilePicture.src;
             if (newProfilePicture) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
-                    const newProfilePictureUrl = e.target.result;
-                    localStorage.setItem('profilePicture', newProfilePictureUrl);
+                    newProfilePictureUrl = e.target.result;
                     profilePicture.src = newProfilePictureUrl;
+                    salvarPerfilNoLocalStorage(newUsername, newEmail, newBio, newProfilePictureUrl);
                 };
                 reader.readAsDataURL(newProfilePicture);
+            } else {
+                salvarPerfilNoLocalStorage(newUsername, newEmail, newBio, newProfilePictureUrl);
             }
 
             usernameDisplay.textContent = newUsername;
@@ -253,23 +171,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
-function carregarPerfilDoLocalStorage() {
-    const storedUsername = localStorage.getItem('username');
-    const storedEmail = localStorage.getItem('email');
-    const storedBio = localStorage.getItem('bio');
-    const storedProfilePicture = localStorage.getItem('profilePicture');
-
-    if (storedUsername) {
-        document.getElementById('usernameDisplay').textContent = storedUsername;
-    }
-    if (storedEmail) {
-        document.getElementById('emailDisplay').textContent = storedEmail;
-    }
-    if (storedBio) {
-        document.getElementById('bioDisplay').textContent = storedBio;
-    }
-    if (storedProfilePicture) {
-        document.getElementById('profilePicture').src = storedProfilePicture;
-    }
-}
