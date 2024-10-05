@@ -1,4 +1,4 @@
-let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [ 
+let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
     { username: 'usuario1', password: 'senha1' },
     { username: 'usuario2', password: 'senha2' }
 ];
@@ -73,7 +73,7 @@ function addToCart(name, price) {
         cart.push({ name: name, price: price, quantity: 1 });
     }
 
-    localStorage.setItem('cart', JSON.stringify(cart));  
+    localStorage.setItem('cart', JSON.stringify(cart));
     alert(`${name} foi adicionado ao carrinho.`);
 }
 
@@ -94,7 +94,7 @@ function updateCart() {
         let itemPrice = item.price;
 
         if (item.quantity >= 3) {
-            itemPrice = item.price * 0.5;  
+            itemPrice = item.price * 0.5;
         }
 
         const itemElement = document.createElement("div");
@@ -119,12 +119,12 @@ function removeFromCart(name) {
 }
 
 function calcularPromocao(preco, nomeProduto) {
-    const precoPromocional = preco * 0.5; 
+    const precoPromocional = preco * 0.5;
     const mensagem = `Leve 3 unidades de ${nomeProduto} por R$ ${precoPromocional.toFixed(2)} cada!`;
 
     const idProdutoFormatado = `promocao-${nomeProduto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/--+/g, '-').replace(/[^\w-]/g, '')}`;
 
-    console.log(`ID gerado: ${idProdutoFormatado}`);  
+    console.log(`ID gerado: ${idProdutoFormatado}`);
 
     const promoElement = document.getElementById(idProdutoFormatado);
     if (promoElement) {
@@ -255,30 +255,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function carregarPerfilDoLocalStorage() {
-    const currentUser = localStorage.getItem('currentUser');
-    if (!currentUser) return;
-
-    const storedProfile = JSON.parse(localStorage.getItem(`profile_${currentUser}`)) || {};
-    const { username, email, bio, profilePicture } = storedProfile;
-
-    if (username) {
-        document.getElementById('usernameDisplay').textContent = username;
-    }
-    if (email) {
-        document.getElementById('emailDisplay').textContent = email;
-    }
-    if (bio) {
-        document.getElementById('bioDisplay').textContent = bio;
-    }
-    if (profilePicture) {
-        document.getElementById('profilePicture').src = profilePicture;
+    const perfil = JSON.parse(localStorage.getItem('perfil'));
+    if (perfil) {
+        document.getElementById('usernameDisplay').textContent = perfil.username || 'Nome não definido';
+        document.getElementById('emailDisplay').textContent = perfil.email || 'Email não definido';
+        document.getElementById('bioDisplay').textContent = perfil.bio || 'Bio não definida';
+        document.getElementById('profilePicture').src = perfil.profilePicture || 'default-picture.jpg';
     }
 }
 
 function salvarPerfilNoLocalStorage(username, email, bio, profilePicture) {
-    const currentUser = localStorage.getItem('currentUser');
-    if (!currentUser) return;
-
-    const profileData = { username, email, bio, profilePicture };
-    localStorage.setItem(`profile_${currentUser}`, JSON.stringify(profileData));
+    const perfil = { username, email, bio, profilePicture };
+    localStorage.setItem('perfil', JSON.stringify(perfil));
 }
