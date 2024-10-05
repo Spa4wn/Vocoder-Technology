@@ -193,8 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-});
-carregarPerfilDoLocalStorage();
+
+    carregarPerfilDoLocalStorage();
+
     const editProfileButton = document.getElementById('editProfileButton');
     const editProfileModal = document.getElementById('editProfileModal');
     const closeButton = document.querySelector('.close-button');
