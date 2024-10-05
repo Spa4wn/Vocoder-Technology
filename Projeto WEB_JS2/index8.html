@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Vocoder Technology - Finalização de Compra</title>
+    <link rel="icon" href="image/favoicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="style/styles.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image/favoicon.ico" alt="Logo" class="logo-img">
+            Vocoder Technology
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="index2.html"><i class="fas fa-home"></i> <span class="icon-text">Início</span></a></li>
+                <li><a href="index7.html"><i class="fas fa-user"></i> <span class="icon-text">Conta</span></a></li>
+                <li><a href="index4.html"><i class="fas fa-book"></i> <span class="icon-text">Catálogo</span></a></li>
+                <li><a href="index3.html"><i class="fas fa-shopping-cart"></i> <span class="icon-text">Carrinho</span></a></li>
+                <li><a href="index6.html"><i class="fas fa-cogs"></i> <span class="icon-text">SoftWare</span></a></li>
+                <li><a href="#" id="logoutButton"><i class="fas fa-sign-out-alt"></i> <span class="icon-text">Logout</span></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1><i class="fas fa-check"></i> Finalização de Compra</h1>
+        
+        <section id="order-summary">
+            <h2><i class="fas fa-list"></i> Resumo do Pedido</h2>
+            <div id="cart-summary"></div>
+            <div id="total-summary"></div>
+        </section>
+        
+        <section id="shipping-address">
+            <h2><i class="fas fa-map-marker-alt"></i> Endereço de Entrega</h2>
+            <form id="addressForm">
+                <label for="address"><i class="fas fa-home"></i> Endereço:</label>
+                <input type="text" id="address" name="address" required><br>
+                
+                <label for="city"><i class="fas fa-city"></i> Cidade:</label>
+                <input type="text" id="city" name="city" required><br>
+                
+                <label for="state"><i class="fas fa-flag"></i> Estado:</label>
+                <input type="text" id="state" name="state" required><br>
+                
+                <label for="zip"><i class="fas fa-envelope"></i> CEP:</label>
+                <input type="text" id="zip" name="zip" required><br>
+                
+                <button type="submit"><i class="fas fa-save"></i> Salvar Endereço</button>
+            </form>
+        </section>
+        
+        <section id="payment-confirmation">
+            <h2><i class="fas fa-credit-card"></i> Confirmação de Pagamento</h2>
+            <div id="selected-payment-method"></div>
+            <button id="confirmPurchaseButton"><i class="fas fa-check-circle"></i> Confirmar Compra</button>
+        </section>
+    </main>
+    <footer>
+        <div class="social">
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>  
+            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>  
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+        <div class="contact">
+            <p><i class="fas fa-envelope"></i> Contato: VocoderTechnology@hotmail.com.br</p>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2024, Vocoder Technology. Transformando dados em decisões.</p>  
+        </div>
+    </footer>
+    <script src="script/script.js"></script>
+</body>
+</html>
