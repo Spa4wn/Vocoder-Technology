@@ -4,6 +4,29 @@ document.addEventListener("DOMContentLoaded", function() {
     const closeButton = document.querySelector(".close-button");
     const editProfileForm = document.getElementById("editProfileForm");
 
+    
+    function loadProfileData() {
+        const username = localStorage.getItem("username");
+        const email = localStorage.getItem("email");
+        const bio = localStorage.getItem("bio");
+        const profilePicture = localStorage.getItem("profilePicture");
+
+        if (username) document.getElementById("usernameDisplay").textContent = username;
+        if (email) document.getElementById("emailDisplay").textContent = email;
+        if (bio) document.getElementById("bioDisplay").textContent = bio;
+        if (profilePicture) document.getElementById("profilePicture").src = profilePicture;
+    }
+
+    
+    function saveProfileData(username, email, bio, profilePicture) {
+        localStorage.setItem("username", username);
+        localStorage.setItem("email", email);
+        localStorage.setItem("bio", bio);
+        if (profilePicture) {
+            localStorage.setItem("profilePicture", profilePicture);
+        }
+    }
+
     function openModal() {
         editProfileModal.style.display = "block";
     }
@@ -37,8 +60,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 document.getElementById("profilePicture").src = e.target.result;
+                saveProfileData(username, email, bio, e.target.result);
             };
             reader.readAsDataURL(profilePictureInput.files[0]);
+        } else {
+            saveProfileData(username, email, bio);
         }
 
         closeModal();
@@ -49,4 +75,7 @@ document.addEventListener("DOMContentLoaded", function() {
         alert("Você saiu da sua conta.");
         window.location.href = "index.html";
     });
+
+    
+    loadProfileData();
 });
