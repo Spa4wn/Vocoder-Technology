@@ -1,4 +1,4 @@
-let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [ 
+let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
     { username: 'usuario1', password: 'senha1' },
     { username: 'usuario2', password: 'senha2' }
 ];
@@ -43,6 +43,7 @@ function login(event) {
 
     if (usuario) {
         localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('loggedInUser', username);
         window.location.href = 'index2.html';
     } else {
         const loginMessage = document.getElementById('loginMessage');
@@ -60,6 +61,7 @@ function verificarLogin() {
 
 function logout() {
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('loggedInUser');
     alert("Você saiu da sua conta.");
     window.location.href = 'index.html';
 }
@@ -154,6 +156,34 @@ function finalizarCompra() {
     window.location.href = 'index2.html';
 }
 
+function saveUserProfile(username, profileData) {
+    const userProfiles = JSON.parse(localStorage.getItem('userProfiles')) || {};
+    userProfiles[username] = profileData;
+    localStorage.setItem('userProfiles', JSON.stringify(userProfiles));
+}
+
+function loadUserProfile(username) {
+    const userProfiles = JSON.parse(localStorage.getItem('userProfiles')) || {};
+    return userProfiles[username] || {};
+}
+
+function applyUserProfile(username) {
+    const profileData = loadUserProfile(username);
+    if (profileData) {
+        document.getElementById("usernameDisplay").textContent = profileData.username || username;
+        document.getElementById("emailDisplay").textContent = profileData.email || 'usuario@exemplo.com';
+        document.getElementById("bioDisplay").textContent = profileData.bio || 'Esta é a sua biografia.';
+        if (profileData.profilePicture) {
+            document.getElementById("profilePicture").src = profileData.profilePicture;
+        }
+    }
+}
+
+function saveProfileData(username, email, bio, profilePicture) {
+    const profileData = { username, email, bio, profilePicture };
+    saveUserProfile(username, profileData);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
@@ -201,23 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const editProfileForm = document.getElementById("editProfileForm");
 
     function loadProfileData() {
-        const username = localStorage.getItem("username");
-        const email = localStorage.getItem("email");
-        const bio = localStorage.getItem("bio");
-        const profilePicture = localStorage.getItem("profilePicture");
-
-        if (username) document.getElementById("usernameDisplay").textContent = username;
-        if (email) document.getElementById("emailDisplay").textContent = email;
-        if (bio) document.getElementById("bioDisplay").textContent = bio;
-        if (profilePicture) document.getElementById("profilePicture").src = profilePicture;
-    }
-
-    function saveProfileData(username, email, bio, profilePicture) {
-        localStorage.setItem("username", username);
-        localStorage.setItem("email", email);
-        localStorage.setItem("bio", bio);
-        if (profilePicture) {
-            localStorage.setItem("profilePicture", profilePicture);
+        const loggedInUser = localStorage.getItem('loggedInUser');
+        if (loggedInUser) {
+            applyUserProfile(loggedInUser);
         }
     }
 
