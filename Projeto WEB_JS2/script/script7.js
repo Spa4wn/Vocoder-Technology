@@ -1,52 +1,65 @@
-  const editProfileButton = document.getElementById('editProfileButton');
-    const editProfileModal = document.getElementById('editProfileModal');
-    const closeButton = document.querySelector('.close-button');
-    const editProfileForm = document.getElementById('editProfileForm');
-    const profilePicture = document.getElementById('profilePicture');
-    const usernameDisplay = document.getElementById('usernameDisplay');
-    const emailDisplay = document.getElementById('emailDisplay');
-    const bioDisplay = document.getElementById('bioDisplay');
+// script7.js
 
-    if (editProfileButton) {
-        editProfileButton.addEventListener('click', () => {
-            editProfileModal.style.display = 'block';
-        });
+document.addEventListener("DOMContentLoaded", function() {
+    const editProfileButton = document.getElementById("editProfileButton");
+    const editProfileModal = document.getElementById("editProfileModal");
+    const closeButton = document.querySelector(".close-button");
+    const editProfileForm = document.getElementById("editProfileForm");
+
+    
+    function openModal() {
+        editProfileModal.style.display = "block";
     }
 
-    if (closeButton) {
-        closeButton.addEventListener('click', () => {
-            editProfileModal.style.display = 'none';
-        });
+    
+    function closeModal() {
+        editProfileModal.style.display = "none";
     }
 
-    window.addEventListener('click', (event) => {
+    
+    editProfileButton.addEventListener("click", openModal);
+
+    
+    closeButton.addEventListener("click", closeModal);
+
+    
+    window.addEventListener("click", function(event) {
         if (event.target === editProfileModal) {
-            editProfileModal.style.display = 'none';
+            closeModal();
         }
     });
 
-    if (editProfileForm) {
-        editProfileForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const newUsername = document.getElementById('editUsername').value;
-            const newEmail = document.getElementById('editEmail').value;
-            const newBio = document.getElementById('editBio').value;
-            const newProfilePicture = document.getElementById('editProfilePicture').files[0];
 
-            if (newProfilePicture) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    profilePicture.src = e.target.result;
-                };
-                reader.readAsDataURL(newProfilePicture);
-            }
+    editProfileForm.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-            usernameDisplay.textContent = newUsername;
-            emailDisplay.textContent = newEmail;
-            bioDisplay.textContent = newBio;
+        const username = document.getElementById("editUsername").value;
+        const email = document.getElementById("editEmail").value;
+        const bio = document.getElementById("editBio").value;
+        const profilePictureInput = document.getElementById("editProfilePicture");
 
-            editProfileModal.style.display = 'none';
-            alert('Perfil atualizado com sucesso!');
-        });
-    }
+      
+        document.getElementById("usernameDisplay").textContent = username;
+        document.getElementById("emailDisplay").textContent = email;
+        document.getElementById("bioDisplay").textContent = bio;
+
+        
+        if (profilePictureInput.files.length > 0) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("profilePicture").src = e.target.result;
+            };
+            reader.readAsDataURL(profilePictureInput.files[0]);
+        }
+
+        
+        closeModal();
+    });
+
+    
+    const logoutButton = document.getElementById("logoutButton");
+    logoutButton.addEventListener("click", function() {
+        alert("Você saiu da sua conta.");
+        
+    });
 });
