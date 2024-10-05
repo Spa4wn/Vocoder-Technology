@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total').appendChild(checkoutButton);
     }
 
-    if (window.location.pathname.includes('index2.html') || window.location.pathname.includes('index3.html') || window.location.pathname.includes('index4.html') || window.location.pathname.includes('index6.html')) {
+    if (window.location.pathname.includes('index2.html') || window.location.pathname.includes('index3.html') || window.location.pathname.includes('index4.html') || window.location.pathname.includes('index6.html') || window.location.pathname.includes('index7.html')) {
         verificarLogin();
         const logoutButton = document.getElementById('logoutButton');
         if (logoutButton) {
