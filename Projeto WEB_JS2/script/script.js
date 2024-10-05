@@ -138,7 +138,7 @@ function calcularPromocao(preco, nomeProduto) {
 }
 
 function finalizarCompra() {
-    window.location.href = 'index5.html'; // Redireciona para a página de finalização de compra
+    window.location.href = 'index5.html'; 
 }
 
 function saveUserProfile(username, profileData) {
@@ -239,7 +239,7 @@ function confirmPurchase() {
     alert(`Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value}`);
     
     localStorage.removeItem('cart');
-    window.location.href = 'index2.html';
+    window.location.href = 'agradecimento.html'; 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
