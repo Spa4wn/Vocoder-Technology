@@ -1,4 +1,4 @@
-* { 
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -92,10 +92,14 @@ h1 {
     margin-bottom: 40px;
 }
 
-h2, h3 {
-    font-size: 28px;
+h4 a {
     color: #d24896;
-    margin-bottom: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+h4 a:hover {
+    color: #ed9ac2;
 }
 
 p {
@@ -148,78 +152,13 @@ footer p {
     color: #aaa;
 }
 
-#cart, #total {
-    background-color: #222;
-    padding: 30px;
-    border-radius: 15px;
-    color: #fff;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-}
-
-.message {
-    background-color: #d24896;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    display: none;
-}
-
-.profile-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    object-fit: cover;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.8);
-}
-
-.modal-content {
-    background-color: #151515;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
-    color: #f4f4f4;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: #ed9ac2;
-    text-decoration: none;
-    cursor: pointer;
-}
-
 form label {
     display: block;
     margin: 15px 0 5px;
     color: #ed9ac2;
 }
 
-form input, form textarea {
+form input {
     width: 100%;
     padding: 10px;
     margin-bottom: 20px;
@@ -258,10 +197,6 @@ form input, form textarea {
         font-size: 32px;
     }
 
-    h2, h3 {
-        font-size: 24px;
-    }
-
     p {
         font-size: 16px;
     }
@@ -277,9 +212,5 @@ form input, form textarea {
 
     footer p {
         font-size: 12px;
-    }
-
-    .message {
-        padding: 15px;
     }
 }
