@@ -138,7 +138,7 @@ function calcularPromocao(preco, nomeProduto) {
 }
 
 function finalizarCompra() {
-    window.location.href = 'index5.html'; 
+    window.location.href = 'index8.html'; 
 }
 
 function saveUserProfile(username, profileData) {
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('total').appendChild(checkoutButton);
     }
 
-    if (window.location.pathname.includes('index5.html')) {
+    if (window.location.pathname.includes('index8.html')) {
         updateOrderSummary();
         loadPaymentMethod();
 
