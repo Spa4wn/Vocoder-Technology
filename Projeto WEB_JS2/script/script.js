@@ -138,7 +138,7 @@ function calcularPromocao(preco, nomeProduto) {
 }
 
 function finalizarCompra() {
-    window.location.href = 'index8.html'; 
+    window.location.href = 'pagamento.html'; 
 }
 
 function saveUserProfile(username, profileData) {
