@@ -7,23 +7,25 @@ function salvarUsuarios() {
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
 }
 
+function displayMessage(elementId, message, color) {
+    const element = document.getElementById(elementId);
+    element.textContent = message;
+    element.style.color = color;
+}
+
 function register(event) {
     event.preventDefault();
     const newUsername = document.getElementById('newUsername').value;
     const newPassword = document.getElementById('newPassword').value;
 
     if (!newUsername || !newPassword) {
-        const registerMessage = document.getElementById('registerMessage');
-        registerMessage.textContent = 'Por favor, preencha todos os campos.';
-        registerMessage.style.color = 'red';
+        displayMessage('registerMessage', 'Por favor, preencha todos os campos.', 'red');
         return;
     }
 
     const userExists = usuarios.some(user => user.username === newUsername);
     if (userExists) {
-        const registerMessage = document.getElementById('registerMessage');
-        registerMessage.textContent = 'Este nome de usuário já está em uso.';
-        registerMessage.style.color = 'red';
+        displayMessage('registerMessage', 'Este nome de usuário já está em uso.', 'red');
         return;
     }
 
@@ -46,9 +48,7 @@ function login(event) {
         localStorage.setItem('loggedInUser', username);
         window.location.href = 'index2.html';
     } else {
-        const loginMessage = document.getElementById('loginMessage');
-        loginMessage.textContent = 'Usuário ou senha inválidos.';
-        loginMessage.style.color = 'red';
+        displayMessage('loginMessage', 'Usuário ou senha inválidos.', 'red');
     }
 }
 
