@@ -3,6 +3,23 @@ let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
     { username: 'usuario2', password: 'senha2' }
 ];
 
+function cep() {
+
+    let cep = document.queryselector(".cep").value
+    console.log(cep)
+    dados(cep)
+}
+
+async function dados(cep) {
+    let dados = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json())
+    console.log(dados)
+    permuta(dados)
+}
+
+function permuta(dados) {
+    document.queryselector(".cidade").innerHtml = dados.localidade
+}
+
 function salvarUsuarios() {
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
 }
