@@ -207,6 +207,7 @@ function saveAddress(event) {
     localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
 
     alert('Endereço salvo com sucesso!');
+    window.location.href = 'agradecimento.html'; // Redirect to thank you page after saving address
 }
 
 function loadPaymentMethod() {
@@ -214,6 +215,12 @@ function loadPaymentMethod() {
     if (paymentMethod) {
         const selectedPaymentElement = document.getElementById('selected-payment-method');
         selectedPaymentElement.innerHTML = `Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt}`;
+        
+        // Redirect to address confirmation page after selecting payment method
+        alert('Método de pagamento confirmado!');
+        window.location.href = 'index8.html'; 
+    } else {
+        alert('Por favor, selecione um método de pagamento.');
     }
 }
 
@@ -239,6 +246,7 @@ function confirmPurchase() {
     alert(`Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value}`);
     
     localStorage.removeItem('cart');
+    // Redirect to thank you page after confirming address
     window.location.href = 'agradecimento.html'; 
 }
 
