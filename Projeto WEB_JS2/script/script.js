@@ -4,20 +4,19 @@ let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
 ];
 
 function cep() {
-
-    let cep = document.queryselector(".cep").value
-    console.log(cep)
-    dados(cep)
+    let cep = document.querySelector(".cep").value;
+    console.log(cep);
+    dados(cep);
 }
 
 async function dados(cep) {
-    let dados = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json())
-    console.log(dados)
-    permuta(dados)
+    let dados = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json());
+    console.log(dados);
+    permuta(dados);
 }
 
 function permuta(dados) {
-    document.queryselector(".cidade").innerHtml = dados.localidade
+    document.querySelector(".cidade").innerHTML = dados.localidade;
 }
 
 function salvarUsuarios() {
@@ -154,10 +153,6 @@ function calcularPromocao(preco, nomeProduto) {
     }
 }
 
-function finalizarCompra() {
-    window.location.href = 'pagamento.html'; 
-}
-
 function saveUserProfile(username, profileData) {
     const userProfiles = JSON.parse(localStorage.getItem('userProfiles')) || {};
     userProfiles[username] = profileData;
@@ -224,7 +219,7 @@ function saveAddress(event) {
     localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
 
     alert('Endereço salvo com sucesso!');
-    window.location.href = 'agradecimento.html'; // Redirect to thank you page after saving address
+    window.location.href = 'agradecimento.html'; 
 }
 
 function loadPaymentMethod() {
@@ -233,7 +228,6 @@ function loadPaymentMethod() {
         const selectedPaymentElement = document.getElementById('selected-payment-method');
         selectedPaymentElement.innerHTML = `Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt}`;
         
-        // Redirect to address confirmation page after selecting payment method
         alert('Método de pagamento confirmado!');
         window.location.href = 'index8.html'; 
     } else {
@@ -263,7 +257,7 @@ function confirmPurchase() {
     alert(`Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value}`);
     
     localStorage.removeItem('cart');
-    // Redirect to thank you page after confirming address
+    
     window.location.href = 'agradecimento.html'; 
 }
 
@@ -301,6 +295,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const confirmPurchaseButton = document.getElementById('confirmPurchaseButton');
         if (confirmPurchaseButton) {
             confirmPurchaseButton.addEventListener('click', confirmPurchase);
+        }
+    }
+
+    if (window.location.pathname.includes('pagamento.html')) {
+        const confirmPaymentButton = document.getElementById('confirmPaymentButton');
+        if (confirmPaymentButton) {
+            confirmPaymentButton.addEventListener('click', loadPaymentMethod);
         }
     }
 
