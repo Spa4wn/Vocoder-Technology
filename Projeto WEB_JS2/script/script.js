@@ -9,7 +9,7 @@ function cep() {
     dados(cep)
 }
 async function dados(cep) {
-    let dados = await fetch(https://viacep.com.br/ws/${cep}/json/).then(response => response.json())
+    let dados = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json())
     console.log(dados)
     permuta(dados)
 }
@@ -90,7 +90,7 @@ function addToCart(name, price) {
     }
 
     localStorage.setItem('cart', JSON.stringify(cart));  
-    alert(${name} foi adicionado ao carrinho.);
+    alert(`${name} foi adicionado ao carrinho.`);
 }
 
 function updateCart() {
@@ -115,16 +115,16 @@ function updateCart() {
 
         const itemElement = document.createElement("div");
         itemElement.className = "cart-item";
-        itemElement.innerHTML = 
+        itemElement.innerHTML = `
             <span>${item.name} (x${item.quantity})</span>
             <span>R$ ${(item.price * item.quantity).toFixed(2)}</span>
             <button onclick="removeFromCart('${item.name}')">Remover</button>
-        ;
+        `;
         cartElement.appendChild(itemElement);
         total += itemPrice * item.quantity;
     });
 
-    cartTotalElement.innerHTML = Total: R$ ${total.toFixed(2)};
+    cartTotalElement.innerHTML = `Total: R$ ${total.toFixed(2)}`;
 }
 
 function removeFromCart(name) {
@@ -136,17 +136,17 @@ function removeFromCart(name) {
 
 function calcularPromocao(preco, nomeProduto) {
     const precoPromocional = preco * 0.5; 
-    const mensagem = Leve 3 unidades de ${nomeProduto} por R$ ${precoPromocional.toFixed(2)} cada!;
+    const mensagem = `Leve 3 unidades de ${nomeProduto} por R$ ${precoPromocional.toFixed(2)} cada!`;
 
-    const idProdutoFormatado = promocao-${nomeProduto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/--+/g, '-').replace(/[^\w-]/g, '')};
+    const idProdutoFormatado = `promocao-${nomeProduto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, '-').replace(/--+/g, '-').replace(/[^\w-]/g, '')}`;
 
-    console.log(ID gerado: ${idProdutoFormatado});  
+    console.log(`ID gerado: ${idProdutoFormatado}`);  
 
     const promoElement = document.getElementById(idProdutoFormatado);
     if (promoElement) {
         promoElement.textContent = mensagem;
     } else {
-        console.error(Elemento ${idProdutoFormatado} não encontrado.);
+        console.error(`Elemento ${idProdutoFormatado} não encontrado.`);
     }
 }
 
@@ -198,15 +198,15 @@ function updateOrderSummary() {
     cart.forEach(item => {
         const itemElement = document.createElement("div");
         itemElement.className = "cart-item";
-        itemElement.innerHTML = 
+        itemElement.innerHTML = `
             <span>${item.name} (x${item.quantity})</span>
             <span>R$ ${(item.price * item.quantity).toFixed(2)}</span>
-        ;
+        `;
         cartSummaryElement.appendChild(itemElement);
         total += item.price * item.quantity;
     });
 
-    totalSummaryElement.innerHTML = Total: R$ ${total.toFixed(2)};
+    totalSummaryElement.innerHTML = `Total: R$ ${total.toFixed(2)}`;
 }
 
 function saveAddress(event) {
@@ -227,7 +227,7 @@ function loadPaymentMethod() {
     const paymentMethod = document.querySelector('input[name="payment"]:checked');
     if (paymentMethod) {
         const selectedPaymentElement = document.getElementById('selected-payment-method');
-        selectedPaymentElement.innerHTML = Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt};
+        selectedPaymentElement.innerHTML = `Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt}`;
 
         // Redirect to address confirmation page after selecting payment method
         alert('Método de pagamento confirmado!');
@@ -256,7 +256,7 @@ function confirmPurchase() {
         return;
     }
 
-    alert(Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value});
+    alert(`Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value}`);
 
     localStorage.removeItem('cart');
     // Redirect to thank you page after confirming address
