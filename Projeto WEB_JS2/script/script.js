@@ -4,16 +4,19 @@ let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [
 ];
 
 function cep() {
-    let cep = document.queryselector(".cep").value
-    dados(cep)
+    let cep = document.querySelector(".cep").value;
+    dados(cep);
 }
+
 async function dados(cep) {
-    let dados = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json())
-    permuta(dados)
+    let dados = await fetch(`https://viacep.com.br/ws/${cep}/json/`).then(response => response.json());
+    permuta(dados);
 }
+
 function permuta(dados) {
-    document.queryselector(".cidade").innerHtml = dados.localidade
+    document.querySelector(".cidade").innerHTML = dados.localidade;
 }
+
 function salvarUsuarios() {
     localStorage.setItem('usuarios', JSON.stringify(usuarios));
 }
@@ -227,7 +230,6 @@ function loadPaymentMethod() {
         const selectedPaymentElement = document.getElementById('selected-payment-method');
         selectedPaymentElement.innerHTML = `Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt}`;
 
-        
         alert('Método de pagamento confirmado!');
         window.location.href = 'index8.html'; 
     } else {
