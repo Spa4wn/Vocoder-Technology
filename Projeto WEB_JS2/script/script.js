@@ -220,7 +220,7 @@ function saveAddress(event) {
     localStorage.setItem('shippingAddress', JSON.stringify(shippingAddress));
 
     alert('Endereço salvo com sucesso!');
-    window.location.href = 'agradecimento.html'; // Redirect to thank you page after saving address
+    window.location.href = 'index9.html'; 
 }
 
 function loadPaymentMethod() {
@@ -229,7 +229,7 @@ function loadPaymentMethod() {
         const selectedPaymentElement = document.getElementById('selected-payment-method');
         selectedPaymentElement.innerHTML = `Método de Pagamento Selecionado: ${paymentMethod.nextElementSibling.alt}`;
 
-        // Redirect to address confirmation page after selecting payment method
+        
         alert('Método de pagamento confirmado!');
         window.location.href = 'index8.html'; 
     } else {
@@ -259,8 +259,8 @@ function confirmPurchase() {
     alert(`Compra finalizada com sucesso!\nEndereço: ${shippingAddress.address}, ${shippingAddress.city}, ${shippingAddress.state}, ${shippingAddress.zip}\nMétodo de pagamento: ${paymentMethod.value}`);
 
     localStorage.removeItem('cart');
-    // Redirect to thank you page after confirming address
-    window.location.href = 'agradecimento.html'; 
+    
+    window.location.href = 'index9.html'; 
 }
 
 document.addEventListener('DOMContentLoaded', () => {
